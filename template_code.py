@@ -13,7 +13,7 @@ ${properties}
 
   ${type}.fromParams({${this.properties}});
   
-  ${type}.fromJson(jsonRes) {
+  ${type}._fromJson(jsonRes) {
 ${construction}
   }
 

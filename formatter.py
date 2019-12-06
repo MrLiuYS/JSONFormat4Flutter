@@ -110,8 +110,9 @@ def get_type_combobox(need_connect, line):
     # 根据字段数据的最后一位数字标记指定下拉框默认类型
     if obj_type < 8:
         com_box.addItem('Object')
-        com_box.addItem('int')
-        com_box.addItem('double')
+        com_box.addItem('num')
+        # com_box.addItem('int')
+        # com_box.addItem('double')
         com_box.addItem('bool')
         com_box.addItem('String')
 

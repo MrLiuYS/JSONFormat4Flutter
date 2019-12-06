@@ -35,7 +35,7 @@ def check_level_type(t):
     if t == 'Map<String, dynamic>':
         # 不用处理的Map类型
         return 0
-    if t in ('int', 'double', 'bool', 'Object'):
+    if t in ('num', 'bool', 'Object'):
         # 普通数据类型
         return 1
     if t == 'String':
@@ -81,7 +81,7 @@ def build_list_construction(t, f, n):
 
     # 嵌套模板的后续处理
     if check_level_type(class_type) not in (1, 2) and class_type != '':
-        code = code.replace('%s%s' % (n, 'Child' * total), '%s%s == null ? null : new %s.fromJson(%s%s)'
+        code = code.replace('%s%s' % (n, 'Child' * total), '%s%s == null ? null : %s._fromJson(%s%s)'
                             % (n, ('Item' * total), class_type, n, ('Item' * total)))
     else:
         code = code.replace('%s' % ('Child' * total), '%s' % ('Item' * total))
@@ -120,7 +120,7 @@ def add_param_to_code(code, param):
 
     # dict类型处理，只需要修改construction中的输出方式
     elif t_code == 4:
-        code = code.replace('jsonRes[\'%s\']' % f, 'jsonRes[\'%s\'] == null ? null : new %s.fromJson(jsonRes[\'%s\'])' % (f, t, f))
+        code = code.replace('jsonRes[\'%s\']' % f, 'jsonRes[\'%s\'] == null ? null : %s._fromJson(jsonRes[\'%s\'])' % (f, t, f))
 
     # list类型处理，只需要修改construction中的输出方式
     elif t_code == 3:
@@ -218,8 +218,8 @@ def generate_code(work_bean):
         out_res += (line + '\n')
         if first and r'.fromParams({this.' in line:
             class_name = line.split(r'.fromParams({this.')[0].strip()
-            out_res += '\n  factory %s(jsonStr) => jsonStr == null ? null : jsonStr is String ? new %s.fromJson(json.decode(jsonStr)) : ' \
-                       'new %s.fromJson(jsonStr);\n' \
+            out_res += '\n  factory %s(jsonStr) => jsonStr == null ? null : jsonStr is String ? %s._fromJson(json.decode(jsonStr)) : ' \
+                       '%s._fromJson(jsonStr);\n' \
                        % (class_name, class_name, class_name)
             first = False
     return out_res
@@ -231,6 +231,7 @@ def check_and_generate_code(bean):
     msg_box_ui = bean[0][1]
     ignore_level = None
     for f, t, n in bean:
+        
         field_text = f.text()
 
         level = field_text.find('※') // 4
