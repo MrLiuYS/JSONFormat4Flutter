@@ -96,3 +96,18 @@ ModuleNotFoundError: No module named 'PyQt5'
 参考 [issue1](https://github.com/debuggerx01/JSONFormat4Flutter/issues/1) ，如下图，使用5.7.1及之前版本的pyqt5
 
 ![](https://user-gold-cdn.xitu.io/2018/7/17/164a8c24460f41ee?w=1270&h=861&f=png&s=174844)
+
+
+## 打包
+
+安装 pyinstaller
+
+```
+pip3 install pyinstaller
+```
+
+打包可供mac执行的文件
+
+```
+pyinstaller -F formatter.py
+```

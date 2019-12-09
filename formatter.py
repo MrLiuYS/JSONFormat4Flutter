@@ -112,7 +112,7 @@ def get_type_combobox(need_connect, line):
         com_box.addItem('Object')
         com_box.addItem('num')
         # com_box.addItem('int')
-        # com_box.addItem('double')
+        com_box.addItem('num')
         com_box.addItem('bool')
         com_box.addItem('String')
 
