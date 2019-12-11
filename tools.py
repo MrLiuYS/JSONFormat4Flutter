@@ -120,7 +120,7 @@ def add_param_to_code(code, param):
 
     # dict类型处理，只需要修改construction中的输出方式
     elif t_code == 4:
-        code = code.replace('jsonRes[\'%s\']' % f, 'jsonRes[\'%s\'] == null ? null : %s._fromJson(jsonRes[\'%s\'])' % (f, t, f))
+        code = code.replace('jsonRes[\'%s\']' % f, '(jsonRes[\'%s\'] == null || \'null\' == jsonRes[\'%s\']) ? null : %s._fromJson(jsonRes[\'%s\'])' % (f,f, t, f))
 
     # list类型处理，只需要修改construction中的输出方式
     elif t_code == 3:
@@ -218,7 +218,7 @@ def generate_code(work_bean):
         out_res += (line + '\n')
         if first and r'.fromParams({this.' in line:
             class_name = line.split(r'.fromParams({this.')[0].strip()
-            out_res += '\n  factory %s(jsonStr) => jsonStr == null ? null : jsonStr is String ? %s._fromJson(json.decode(jsonStr)) : ' \
+            out_res += '\n  factory %s(jsonStr) => (jsonStr == null || \'null\' == jsonStr) ? null : jsonStr is String ? %s._fromJson(json.decode(jsonStr)) : ' \
                        '%s._fromJson(jsonStr);\n' \
                        % (class_name, class_name, class_name)
             first = False
